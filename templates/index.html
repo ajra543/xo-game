@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Tic-Tac-Toe (XO)</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="stars-bg"></div>
+    <div class="glow-sphere orange"></div>
+    <div class="glow-sphere blue"></div>
+
+    <div class="container">
+        <!-- Game Header -->
+        <header>
+            <h1 class="glow-text">TIC TAC TOE</h1>
+            <p class="subtitle">Experience the classic duel in neon style</p>
+        </header>
+
+        <!-- Mode Select -->
+        <div class="glass-card mode-selector">
+            <button id="btn-pvp" class="mode-btn active" onclick="setMode('pvp')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                2 Player (Local)
+            </button>
+            <button id="btn-pvc" class="mode-btn" onclick="setMode('pvc')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                VS Computer
+            </button>
+        </div>
+
+        <!-- Dashboard Scoreboard -->
+        <div class="glass-card scoreboard">
+            <div class="score-card x-score">
+                <span class="player-label">PLAYER X</span>
+                <span id="score-x" class="score-number">0</span>
+            </div>
+            <div class="score-card draw-score">
+                <span class="player-label">DRAWS</span>
+                <span id="score-draw" class="score-number">0</span>
+            </div>
+            <div class="score-card o-score">
+                <span id="label-o" class="player-label">PLAYER O</span>
+                <span id="score-o" class="score-number">0</span>
+            </div>
+        </div>
+
+        <!-- Status Indicator -->
+        <div class="status-banner">
+            <p id="game-status"><span class="turn-highlight x-turn">X</span>'s Turn</p>
+        </div>
+
+        <!-- Grid Container -->
+        <div class="board-container">
+            <div class="board-grid" id="board">
+                <!-- 9 grid cells -->
+                <button class="cell" data-index="0" id="cell-0" onclick="makeMove(0)"></button>
+                <button class="cell" data-index="1" id="cell-1" onclick="makeMove(1)"></button>
+                <button class="cell" data-index="2" id="cell-2" onclick="makeMove(2)"></button>
+                <button class="cell" data-index="3" id="cell-3" onclick="makeMove(3)"></button>
+                <button class="cell" data-index="4" id="cell-4" onclick="makeMove(4)"></button>
+                <button class="cell" data-index="5" id="cell-5" onclick="makeMove(5)"></button>
+                <button class="cell" data-index="6" id="cell-6" onclick="makeMove(6)"></button>
+                <button class="cell" data-index="7" id="cell-7" onclick="makeMove(7)"></button>
+                <button class="cell" data-index="8" id="cell-8" onclick="makeMove(8)"></button>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button class="btn btn-reset" onclick="resetGame()" id="reset-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89M9 11l3-3 3 3m-3-3v12" />
+                </svg>
+                Reset Match
+            </button>
+        </div>
+    </div>
+
+    <!-- Script File -->
+    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+</body>
+</html>
