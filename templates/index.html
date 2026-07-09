@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Tic-Tac-Toe (XO)</title>
+    <title>VeriTruth AI - Fake News Detector</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <!-- Custom Style Sheet -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
@@ -16,78 +16,219 @@
     <div class="glow-sphere orange"></div>
     <div class="glow-sphere blue"></div>
 
-    <div class="container">
-        <!-- Game Header -->
-        <header>
-            <h1 class="glow-text">TIC TAC TOE</h1>
-            <p class="subtitle">Experience the classic duel in neon style</p>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <h1 class="glow-text">VERITRUTH AI</h1>
+            <p class="subtitle">Explainable Fake News Detection & Real-time Lexical Analysis</p>
         </header>
 
-        <!-- Mode Select -->
-        <div class="glass-card mode-selector">
-            <button id="btn-pvp" class="mode-btn active" onclick="setMode('pvp')">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-                2 Player (Local)
-            </button>
-            <button id="btn-pvc" class="mode-btn" onclick="setMode('pvc')">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                VS Computer
-            </button>
-        </div>
+        <!-- Main Dashboard Workspace -->
+        <main class="dashboard-grid">
+            
+            <!-- Left Side: Control panel and inputs -->
+            <section class="workspace-left">
+                <!-- Mode Tabs -->
+                <div class="glass-card tabs-selector">
+                    <button id="tab-text" class="tab-btn active" onclick="switchTab('text')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Write/Paste Text
+                    </button>
+                    <button id="tab-url" class="tab-btn" onclick="switchTab('url')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                        </svg>
+                        Fetch from URL
+                    </button>
+                </div>
 
-        <!-- Dashboard Scoreboard -->
-        <div class="glass-card scoreboard">
-            <div class="score-card x-score">
-                <span class="player-label">PLAYER X</span>
-                <span id="score-x" class="score-number">0</span>
-            </div>
-            <div class="score-card draw-score">
-                <span class="player-label">DRAWS</span>
-                <span id="score-draw" class="score-number">0</span>
-            </div>
-            <div class="score-card o-score">
-                <span id="label-o" class="player-label">PLAYER O</span>
-                <span id="score-o" class="score-number">0</span>
-            </div>
-        </div>
+                <!-- Input Card -->
+                <div class="glass-card input-card">
+                    <!-- Text input mode -->
+                    <div id="text-input-group" class="input-group active">
+                        <label for="article-title" class="input-label">Article Title <span class="label-optional">(Optional - helps Clickbait analysis)</span></label>
+                        <input type="text" id="article-title" class="glass-input" placeholder="Enter headline or article title...">
+                        
+                        <label for="article-text" class="input-label">Article Content</label>
+                        <textarea id="article-text" class="glass-input textarea" placeholder="Paste the full body text of the article here (minimum 30 characters)..."></textarea>
+                    </div>
 
-        <!-- Status Indicator -->
-        <div class="status-banner">
-            <p id="game-status"><span class="turn-highlight x-turn">X</span>'s Turn</p>
-        </div>
+                    <!-- URL input mode -->
+                    <div id="url-input-group" class="input-group">
+                        <label for="article-url" class="input-label">News Article URL</label>
+                        <div class="url-fetch-bar">
+                            <input type="url" id="article-url" class="glass-input" placeholder="https://news-site.com/article-url">
+                            <button id="btn-fetch" class="btn btn-primary" onclick="fetchArticle()">
+                                <span id="fetch-btn-text">Extract</span>
+                                <div id="fetch-loader" class="loader hidden"></div>
+                            </button>
+                        </div>
+                        <p class="input-note">The scraper will parse the headline and main body text automatically. You can review the extracted text below before running the classifier.</p>
+                        
+                        <label for="scraped-title" class="input-label">Extracted Title</label>
+                        <input type="text" id="scraped-title" class="glass-input" placeholder="Title will appear here...">
+                        
+                        <label for="scraped-text" class="input-label">Extracted Content</label>
+                        <textarea id="scraped-text" class="glass-input scraped-textarea" placeholder="Extracted article body will appear here..."></textarea>
+                    </div>
 
-        <!-- Grid Container -->
-        <div class="board-container">
-            <div class="board-grid" id="board">
-                <!-- 9 grid cells -->
-                <button class="cell" data-index="0" id="cell-0" onclick="makeMove(0)"></button>
-                <button class="cell" data-index="1" id="cell-1" onclick="makeMove(1)"></button>
-                <button class="cell" data-index="2" id="cell-2" onclick="makeMove(2)"></button>
-                <button class="cell" data-index="3" id="cell-3" onclick="makeMove(3)"></button>
-                <button class="cell" data-index="4" id="cell-4" onclick="makeMove(4)"></button>
-                <button class="cell" data-index="5" id="cell-5" onclick="makeMove(5)"></button>
-                <button class="cell" data-index="6" id="cell-6" onclick="makeMove(6)"></button>
-                <button class="cell" data-index="7" id="cell-7" onclick="makeMove(7)"></button>
-                <button class="cell" data-index="8" id="cell-8" onclick="makeMove(8)"></button>
+                    <!-- Action Controls -->
+                    <div class="action-bar">
+                        <button class="btn btn-reset" onclick="clearInputs()">Clear</button>
+                        <button class="btn btn-analyze" id="btn-analyze" onclick="runAnalysis()">
+                            <span id="analyze-text">Analyze Article</span>
+                            <div id="analyze-loader" class="loader hidden"></div>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Side: Dashboard stats, visual charts, and Explainable AI -->
+            <section class="workspace-right">
+                <!-- Welcome Card / Placeholder (Hidden once analyzed) -->
+                <div class="glass-card welcome-card" id="welcome-placeholder">
+                    <div class="welcome-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" class="w-12 h-12">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                        </svg>
+                    </div>
+                    <h2>Awaiting Input Analysis</h2>
+                    <p>Enter text or a URL on the left panel, and click <strong>Analyze Article</strong> to inspect credibility scores, lexical parameters, and word-level features.</p>
+                </div>
+
+                <!-- Analysis Results Panel (Visible after analysis) -->
+                <div class="results-container hidden" id="results-panel">
+                    
+                    <!-- Verdict & Radial Confidence Gauge -->
+                    <div class="results-row-main">
+                        <div class="glass-card verdict-card" id="verdict-status-card">
+                            <div class="verdict-header">
+                                <span class="label-muted">CLASSIFICATION VERDICT</span>
+                                <h2 id="verdict-label">REAL NEWS</h2>
+                            </div>
+                            <p id="verdict-summary">The text demonstrates features highly consistent with trustworthy journalistic reporting.</p>
+                        </div>
+
+                        <div class="glass-card gauge-card">
+                            <div class="radial-gauge">
+                                <svg class="progress-ring" width="120" height="120">
+                                    <circle class="progress-ring__circle-bg" stroke="rgba(255,255,255,0.05)" stroke-width="10" fill="transparent" r="50" cx="60" cy="60"/>
+                                    <circle id="confidence-ring" class="progress-ring__circle" stroke="#10b981" stroke-width="10" fill="transparent" r="50" cx="60" cy="60"/>
+                                </svg>
+                                <div class="gauge-center">
+                                    <span id="confidence-percentage">92%</span>
+                                    <span class="gauge-label">CONFIDENCE</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Explainable AI: Highlight View -->
+                    <div class="glass-card explain-card">
+                        <div class="card-header">
+                            <h3>Explainable AI Feature Highlights</h3>
+                            <div class="legend">
+                                <span class="legend-item"><span class="bullet fake"></span>Fake-leaning</span>
+                                <span class="legend-item"><span class="bullet real"></span>Real-leaning</span>
+                            </div>
+                        </div>
+                        <p class="explain-intro">Hover over highlighted words to see their classification weights. Stronger shades indicate higher model impact.</p>
+                        <div class="text-highlighter-viewport" id="highlight-viewer">
+                            <!-- Populated dynamically with highlighted text spans -->
+                        </div>
+                    </div>
+
+                    <!-- Metrics Grid (Clickbait, Readability, Sentiment) -->
+                    <div class="metrics-grid">
+                        <!-- Clickbait Card -->
+                        <div class="glass-card metric-card" id="clickbait-card">
+                            <div class="metric-header">
+                                <span>Clickbait Likelihood</span>
+                                <span class="metric-badge" id="clickbait-rating">Low</span>
+                            </div>
+                            <div class="metric-value-container">
+                                <span id="clickbait-score" class="metric-number">12%</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div id="clickbait-progress" class="progress-bar" style="width: 12%"></div>
+                            </div>
+                            <ul class="metric-details" id="clickbait-reasons">
+                                <!-- Reasons dynamic -->
+                            </ul>
+                        </div>
+
+                        <!-- Readability Card -->
+                        <div class="glass-card metric-card">
+                            <div class="metric-header">
+                                <span>Readability Index</span>
+                            </div>
+                            <div class="metric-value-container">
+                                <span id="readability-level" class="metric-text">Standard</span>
+                                <span id="readability-score" class="metric-number-small">68.2</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div id="readability-progress" class="progress-bar bg-blue" style="width: 68%"></div>
+                            </div>
+                            <p class="metric-description">Score ranges from 0-100 (FRE). Standard is suitable for 8th-9th grade comprehension.</p>
+                        </div>
+
+                        <!-- Sentiment Card -->
+                        <div class="glass-card metric-card">
+                            <div class="metric-header">
+                                <span>Emotional Leaning</span>
+                                <span class="metric-badge bg-blue" id="sentiment-label">Neutral</span>
+                            </div>
+                            <div class="metric-value-container">
+                                <span id="sentiment-score" class="metric-number">52.5%</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div id="sentiment-progress" class="progress-bar bg-purple" style="width: 52%"></div>
+                            </div>
+                            <p class="metric-description">Closer to 100% indicates positive objective language; closer to 0% indicates negative/sensational wording.</p>
+                        </div>
+                    </div>
+
+                    <!-- Feature Importances: Top Keywords -->
+                    <div class="glass-card charts-card">
+                        <div class="card-header">
+                            <h3>Key Features Contributing to Classification</h3>
+                        </div>
+                        <div class="charts-row">
+                            <!-- Real contributing words -->
+                            <div class="chart-col">
+                                <h4 class="chart-title color-real">Top REAL Indicators</h4>
+                                <div class="bar-chart-container" id="real-words-chart">
+                                    <!-- Dynamic bars -->
+                                </div>
+                            </div>
+                            <!-- Fake contributing words -->
+                            <div class="chart-col">
+                                <h4 class="chart-title color-fake">Top FAKE Indicators</h4>
+                                <div class="bar-chart-container" id="fake-words-chart">
+                                    <!-- Dynamic bars -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- History & Recent Inspections -->
+        <section class="glass-card history-section">
+            <div class="history-header">
+                <h3>Recent Analysis History</h3>
+                <button class="btn-clear-history" onclick="clearHistory()">Clear History</button>
             </div>
-        </div>
-
-        <!-- Controls -->
-        <div class="controls">
-            <button class="btn btn-reset" onclick="resetGame()" id="reset-button">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89M9 11l3-3 3 3m-3-3v12" />
-                </svg>
-                Reset Match
-            </button>
-        </div>
+            <div class="history-list" id="history-items">
+                <p class="no-history-text">No articles checked recently. Run an analysis to start building history.</p>
+            </div>
+        </section>
     </div>
 
     <!-- Script File -->
-    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html>
